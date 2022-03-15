@@ -1,0 +1,6 @@
+name: CZRPG   #플러그인 이름
+version: 1.0        #플러그인 버전
+api-version: 1.18
+main: com.cozy06.Main
+commands:
+  party:
