@@ -1,6 +1,7 @@
 package com.cozy06
 
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -27,7 +28,7 @@ class reinforce: Listener {
                 p.isCancelled = true
                 player.sendMessage("2")
                 inv = Bukkit.createInventory(null, 9, "강화")
-                val GLASS_PANE = ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE, 1) //다이아몬드 검 생성
+                val GLASS_PANE = ItemStack(Material.GRAY_STAINED_GLASS_PANE, 1) //다이아몬드 검 생성
                 val GLASS_PANEMeta = GLASS_PANE.itemMeta //검의 메타데이터
                 GLASS_PANEMeta.setDisplayName(" ") //검의 이름 설정
                 GLASS_PANE.itemMeta = GLASS_PANEMeta //메타데이터 저장
@@ -74,27 +75,53 @@ class reinforce: Listener {
             //만약 클릭된 아이템이 없다면 취소
             if (clickedItem == null || clickedItem.type == Material.AIR) return
             val player = e.whoClicked as Player //클릭한 사람에게
-            if (clickedItem.type == Material.LIGHT_GRAY_STAINED_GLASS_PANE){e.isCancelled = true}
+            if (clickedItem.type == Material.GRAY_STAINED_GLASS_PANE){e.isCancelled = true}
             else if(clickedItem.type == Material.ANVIL) {
                 e.isCancelled = true
                 if(inv!!.getItem(5)?.type == Material.RED_DYE && inv!!.getItem(3)?.type != null) {
+
+                    val reinforcestone = inv!!.getItem(5)?.type?.let { ItemStack(it, (inv!!.getItem(5)?.amount!!)-1) }
+                    val reinforcestoneMeta = reinforcestone?.itemMeta
+                    if (reinforcestone != null) {
+                        reinforcestone.itemMeta = reinforcestoneMeta
+                    } //메타데이터 저장
+                    inv!!.setItem(3, reinforcestone)
+
                     var reinforcenum = inv!!.getItem(3)?.itemMeta?.lore().toString().length
-                    when(if(reinforcenum == null) {randomfunc(100)} else {randomfunc((1/(reinforcenum*5))*100)}){
+                    player.sendMessage(" "+reinforcenum)
+                    when(if(reinforcenum == 0) {0} else {randomfunc((1/(reinforcenum*5))*100)}){
                         0 -> {
                             val item = inv!!.getItem(3)?.type?.let { ItemStack(it, 1) }
                             val itemMeta = item?.itemMeta
-                            if (itemMeta != null) {
-                                itemMeta.setDisplayName(" ")
+
+                            if(reinforcenum == 0) {
+                                if (itemMeta != null) {
+                                    itemMeta.lore = listOf("${ChatColor.YELLOW}★")
+                                }
+                                else {
+                                    var s = "★"
+                                    for (i in 0..reinforcenum) {
+                                        s = (s + "★")
+                                    }
+                                    if (itemMeta != null) {
+                                        itemMeta.lore = listOf("${ChatColor.YELLOW}" + s)
+                                    }
+                                }
                             }
                             if (item != null) {
-                                item.itemMeta = itemMeta
+                                item.itemMeta = itemMeta //메타데이터 저장
+                                inv!!.setItem(3, item)
                             }
                         }//성공
                         1 -> {
                             //val distory = (-20/((reinforcenum/2)-11)-0.4).toInt()
                             when(randomfunc((-20/((reinforcenum/2)-11)-0.4).toInt())) {
-                                0 -> {}
-                                1 -> {}
+                                0 -> {return}
+                                1 -> {
+                                    val air = ItemStack(Material.AIR, 1) //다이아몬드 검 생성
+                                    val airMeta = air.itemMeta
+                                    inv!!.setItem(3, air)
+                                }
                             }
                         }//실패
                     }
