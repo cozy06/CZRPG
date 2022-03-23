@@ -1,6 +1,7 @@
 # CZRPG
 이 문서는 CZRPG에 대한 설명입니다.
 
+-------
 ## COMAND
 ### party
 파티 생성
@@ -15,6 +16,7 @@
 ```
 /party <delete> <파티 이름>
 ```
+-------
 ## Function
 ### reinforce
 인챈트테이블을 우클릭하여 강화GUI를 띄웁니다.
