@@ -9,6 +9,7 @@ class Main: JavaPlugin() {
         logger.info("${ChatColor.GREEN}CZRPG plugin enabled")
         Bukkit.getPluginManager().registerEvents(join(), this)
         Bukkit.getPluginManager().registerEvents(reinforce(), this)
+        Bukkit.getPluginManager().registerEvents(ability(), this)
         getCommand("party")?.setExecutor(party())
     }
 
