@@ -6,10 +6,21 @@ import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.player.PlayerToggleSneakEvent
+
 
 class ability: Listener {
+
+    @EventHandler
+    fun onPlayerToggleSneak(event: PlayerToggleSneakEvent) {
+        val player = event.player
+        if (player.isSneaking) {
+            armorstand(player, Material.DIAMOND_SWORD)
+            player.sendMessage("sss")
+        }
+    }
+
     @EventHandler
     fun click(p: PlayerInteractEvent) {
         val player = p.player
@@ -18,7 +29,7 @@ class ability: Listener {
 //        if(action == Action.RIGHT_CLICK_AIR && player.isSneaking && 20 >= reinforcelvl && reinforcelvl >= 10) {
 //
 //        }
-        if(action == Action.RIGHT_CLICK_AIR) {
+        if(player.isSneaking) {
             armorstand(player, Material.DIAMOND_SWORD)
             player.sendMessage("sss")
         }
