@@ -8,6 +8,8 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerToggleSneakEvent
+import org.bukkit.inventory.ItemStack
+import org.bukkit.util.EulerAngle
 
 
 class ability: Listener {
@@ -36,14 +38,18 @@ class ability: Listener {
     }
 
     fun armorstand(p: Player, item: Material) {
-        val armorStand = p.world.spawnEntity(p.getLocation().add(0.0, -1.0, 0.0), EntityType.ARMOR_STAND) as ArmorStand
-        armorStand.isInvisible = false
+        val armorStand = p.world.spawnEntity(p.getLocation().add(0.0, 0.5, 0.0), EntityType.ARMOR_STAND) as ArmorStand
+        armorStand.isInvisible = true
         armorStand.isInvulnerable = false
-        //armorStand.isSmall = true
-        armorStand.helmet.type = item
-        armorStand.headPose
-        armorStand.setVelocity(p.location.direction.multiply(5))
+        armorStand.isSmall = true
+        armorStand.setHelmet(ItemStack(item, 1))
+        val headPoseyaw = p.player!!.eyeLocation.yaw
+        p.player!!.eyeLocation.pitch
+        armorStand.eyeLocation.yaw = headPoseyaw
+        val headpose = EulerAngle(90.0, 45.0, 0.0)
+        armorStand.headPose = headpose
+        armorStand.setVelocity(p.location.direction.multiply(3))
+        //땅에 닿으면 멈추기
     }
-
 
 }
