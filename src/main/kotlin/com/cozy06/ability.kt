@@ -1,14 +1,26 @@
 package com.cozy06
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.ArmorStand
+import org.bukkit.entity.Arrow
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerToggleSneakEvent
 import org.bukkit.inventory.ItemStack
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
+import org.bukkit.scheduler.BukkitRunnable
+import org.bukkit.scheduler.BukkitScheduler
 import org.bukkit.util.EulerAngle
 
 
@@ -18,8 +30,7 @@ class ability: Listener {
     fun onPlayerToggleSneak(event: PlayerToggleSneakEvent) {
         val player = event.player
         if (player.isSneaking) {
-            armorstand(player, Material.DIAMOND_SWORD)
-            player.sendMessage("sss")
+            armorstand(player, Material.TNT)
         }
     }
 
@@ -41,15 +52,37 @@ class ability: Listener {
         val armorStand = p.world.spawnEntity(p.getLocation().add(0.0, 0.5, 0.0), EntityType.ARMOR_STAND) as ArmorStand
         armorStand.isInvisible = true
         armorStand.isInvulnerable = false
-        armorStand.isSmall = true
+        //armorStand.isSmall = true
         armorStand.setHelmet(ItemStack(item, 1))
         val headPoseyaw = p.player!!.eyeLocation.yaw
         p.player!!.eyeLocation.pitch
         armorStand.eyeLocation.yaw = headPoseyaw
-        val headpose = EulerAngle(90.0, 45.0, 0.0)
-        armorStand.headPose = headpose
-        armorStand.setVelocity(p.location.direction.multiply(3))
-        //땅에 닿으면 멈추기
+        //val headpose = EulerAngle(90.0, 45.0, 0.0)
+        //armorStand.headPose = headpose
+        armorStand.setVelocity(p.location.direction.multiply(1))
+
+        if(armorStand.helmet.type == Material.TNT) {
+            GlobalScope.launch {
+                launch {
+                    print("FIRE IN THE HOLE!!")
+                }
+                async {
+                    delay(5*1000)
+                    armorStand.world.createExplosion(armorStand.location, 1f)
+                    armorStand.remove()
+                }.await()
+            }
+        }
     }
 
+    @EventHandler
+    fun onProjectileHit(e: ProjectileHitEvent) { //투사체 착탄시 실행
+        if(e.entity.type == EntityType.ARROW) {
+            val arrow = e.entity as Arrow //객체를 화살로 변환
+            arrow.remove()
+        }
+//        val arrow = e.entity as Arrow //객체를 화살로 변환
+//        arrow.world.createExplosion(arrow.location, 1f) //화살의 착탄 위치에 폭발 생성
+//        arrow.remove() //화살 삭제
+    }
 }
