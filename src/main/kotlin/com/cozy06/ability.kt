@@ -1,9 +1,5 @@
 package com.cozy06
 
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
@@ -16,21 +12,23 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerToggleSneakEvent
+import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
-import org.bukkit.potion.PotionEffect
-import org.bukkit.potion.PotionEffectType
+import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitRunnable
-import org.bukkit.scheduler.BukkitScheduler
-import org.bukkit.util.EulerAngle
 
 
 class ability: Listener {
+
+    var l: Main = Main()
+    ///val plugin = l.
 
     @EventHandler
     fun onPlayerToggleSneak(event: PlayerToggleSneakEvent) {
         val player = event.player
         if (player.isSneaking) {
             armorstand(player, Material.TNT)
+            player.sendMessage("sss")
         }
     }
 
@@ -62,18 +60,24 @@ class ability: Listener {
         armorStand.setVelocity(p.location.direction.multiply(1))
 
         if(armorStand.helmet.type == Material.TNT) {
-            GlobalScope.launch {
-                launch {
-                    print("FIRE IN THE HOLE!!")
-                }
-                async {
-                    delay(5*1000)
+//            l.delayschedule(5,
+//                {
+//                    armorStand.world.createExplosion(armorStand.location, 1f)
+//                    armorStand.remove()
+//                }
+//            )
+
+            val scheduler = Bukkit.getScheduler();
+            l.plugin?.let {
+                scheduler.scheduleSyncDelayedTask(it, {
                     armorStand.world.createExplosion(armorStand.location, 1f)
                     armorStand.remove()
-                }.await()
+                }, 5*20L)
             }
         }
     }
+
+
 
     @EventHandler
     fun onProjectileHit(e: ProjectileHitEvent) { //투사체 착탄시 실행
