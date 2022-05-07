@@ -16,7 +16,7 @@ class DiscordBot: EventListener {
     //    @JvmStatic
     @Throws(LoginException::class)
     fun main(args: Array<String>) {
-        token = "OTcyMjE5NTI3Mzg1NDY0ODcy.YnV3_g.-9dl_Waec5BGBPO64q7w7MLlbgY"
+        token = ""
         val jda: JDA = JDABuilder.createDefault(token).addEventListeners(DiscordBot()).build()
         jda.presence.setStatus(OnlineStatus.ONLINE)
         //You can also add event listeners to the already built JDA instance
