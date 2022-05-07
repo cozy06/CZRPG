@@ -12,6 +12,7 @@ class Main: JavaPlugin() {
         Bukkit.getPluginManager().registerEvents(reinforce(), this)
         Bukkit.getPluginManager().registerEvents(ability(), this)
         getCommand("party")?.setExecutor(party())
+        run { DiscordBot() }
     }
 
     override fun onDisable() {

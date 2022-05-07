@@ -1,7 +1,6 @@
 package com.cozy06
 
 import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.Arrow
@@ -12,22 +11,19 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerToggleSneakEvent
-import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
-import org.bukkit.plugin.Plugin
-import org.bukkit.scheduler.BukkitRunnable
 
 
 class ability: Listener {
 
-    var l: Main = Main()
+    private val l: Main = Main()
     ///val plugin = l.
 
     @EventHandler
     fun onPlayerToggleSneak(event: PlayerToggleSneakEvent) {
         val player = event.player
         if (player.isSneaking) {
-            armorstand(player, Material.TNT)
+//            armorstand(player, Material.TNT)
             player.sendMessage("sss")
         }
     }
@@ -41,7 +37,7 @@ class ability: Listener {
 //
 //        }
         if(player.isSneaking) {
-            armorstand(player, Material.DIAMOND_SWORD)
+//            armorstand(player, Material.DIAMOND_SWORD)
             player.sendMessage("sss")
         }
     }
@@ -60,13 +56,6 @@ class ability: Listener {
         armorStand.setVelocity(p.location.direction.multiply(1))
 
         if(armorStand.helmet.type == Material.TNT) {
-//            l.delayschedule(5,
-//                {
-//                    armorStand.world.createExplosion(armorStand.location, 1f)
-//                    armorStand.remove()
-//                }
-//            )
-
             val scheduler = Bukkit.getScheduler();
             l.plugin?.let {
                 scheduler.scheduleSyncDelayedTask(it, {
@@ -76,8 +65,6 @@ class ability: Listener {
             }
         }
     }
-
-
 
     @EventHandler
     fun onProjectileHit(e: ProjectileHitEvent) { //투사체 착탄시 실행
