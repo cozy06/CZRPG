@@ -1,5 +1,6 @@
 package com.cozy06
 
+import com.cozy06.Main
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.ArmorStand
@@ -12,12 +13,13 @@ import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerToggleSneakEvent
 import org.bukkit.inventory.ItemStack
+import org.bukkit.plugin.Plugin
+import org.jetbrains.annotations.NotNull
 
 
 class ability: Listener {
-
+    
     private val l: Main = Main()
-    ///val plugin = l.
 
     @EventHandler
     fun onPlayerToggleSneak(event: PlayerToggleSneakEvent) {
