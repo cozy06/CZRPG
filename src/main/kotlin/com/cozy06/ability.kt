@@ -1,6 +1,5 @@
 package com.cozy06
 
-import com.cozy06.Main
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.ArmorStand
@@ -13,13 +12,12 @@ import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerToggleSneakEvent
 import org.bukkit.inventory.ItemStack
-import org.bukkit.plugin.Plugin
-import org.jetbrains.annotations.NotNull
+import org.bukkit.plugin.java.JavaPlugin.getPlugin
 
 
 class ability: Listener {
-    
-    private val l: Main = Main()
+
+    var main: Main = Main.getPlugin<Main>(Main::class.java)
 
     @EventHandler
     fun onPlayerToggleSneak(event: PlayerToggleSneakEvent) {
@@ -59,7 +57,7 @@ class ability: Listener {
 
         if(armorStand.helmet.type == Material.TNT) {
             val scheduler = Bukkit.getScheduler();
-            l.plugin?.let {
+            main.plugin?.let {
                 scheduler.scheduleSyncDelayedTask(it, {
                     armorStand.world.createExplosion(armorStand.location, 1f)
                     armorStand.remove()
