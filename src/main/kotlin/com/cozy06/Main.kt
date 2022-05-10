@@ -5,7 +5,6 @@ import org.bukkit.ChatColor
 import org.bukkit.plugin.java.JavaPlugin
 
 class Main: JavaPlugin() {
-    val plugin: JavaPlugin? = null
     override fun onEnable() {
         logger.info("${ChatColor.GREEN}CZRPG plugin enabled")
         Bukkit.getPluginManager().registerEvents(join(), this)

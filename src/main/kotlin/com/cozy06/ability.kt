@@ -57,7 +57,7 @@ class ability: Listener {
 
         if(armorStand.helmet.type == Material.TNT) {
             val scheduler = Bukkit.getScheduler();
-            main.plugin?.let {
+            main.let {
                 scheduler.scheduleSyncDelayedTask(it, {
                     armorStand.world.createExplosion(armorStand.location, 1f)
                     armorStand.remove()
